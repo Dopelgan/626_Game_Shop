@@ -23,10 +23,11 @@ class CreateGamesTable extends Migration
             $table->unsignedInteger('quantity')->default('0');
             $table->unsignedBigInteger('sold_quantity')->default('0');
             $table->unsignedBigInteger('count')->default('0');
-            $table->longText('image_link');
+            $table->longText('image');
+            $table->unsignedInteger('year');
             $table->unique(['name', 'platform_id']);
 
-            $table->foreign('platform_id')->references('id')->on('platform');
+            $table->foreign('platform_id')->references('id')->on('platforms');
         });
     }
 
