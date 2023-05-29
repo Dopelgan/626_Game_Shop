@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Game;
+use App\Platform;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -33,9 +34,13 @@ class AdminController extends Controller
             'image' => 'required|image|mimes:png,jpg,jpeg|max:2048',
         ], $messages);
 
-        $imageName = time().'.'.$request->image->extension();
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
 
-        $request->image->move(public_path('games_images'), $imageName);
+            $imageName = time() . '.' . $image->extension();
+
+            $image->move(public_path('games_images'), $imageName);
+        }
 
         DB::transaction(function () use ($request) {
             $game = new Game();
@@ -52,6 +57,22 @@ class AdminController extends Controller
 
     public function platform_add(Request $request)
     {
-        dd($request->all());
+        if ($request->hasFile('small_image') && $request->hasFile('big_image')) {
+            $small_image = $request->file('small_image');
+            $big_image = $request->file('big_image');
+
+            $small_imageName = time() . '.' . $small_image->extension();
+            $big_imageName = time() . '.' . $big_image->extension();
+
+            $small_image->move(public_path('platforms_images/small'), $small_imageName);
+            $big_image->move(public_path('platforms_images/big'), $big_imageName);
+        }
+
+        DB::transaction(function () use ($request) {
+            $game = new Platform();
+            $game->name = $request->name;
+            $game->full_name = $request->full_name;
+            $game->save();
+        });
     }
 }
