@@ -16,8 +16,8 @@ class CreateGameGenreTable extends Migration
         Schema::create('game_genre', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->unsignedInteger('game_id');
-            $table->unsignedInteger('genre_id');
+            $table->unsignedBigInteger('game_id');
+            $table->unsignedBigInteger('genre_id');
 
             $table->unique(['game_id', 'genre_id']);
             $table->foreign('game_id')->references('id')->on('games');

@@ -18,8 +18,6 @@ class CreatePlatformsTable extends Migration
             $table->timestamps();
             $table->string('name')->unique();
             $table->string('full_name')->unique();
-            $table->text('main_image_link')->nullable();
-            $table->text('game_image_link')->nullable();
         });
     }
 

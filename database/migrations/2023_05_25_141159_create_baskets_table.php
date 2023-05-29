@@ -16,8 +16,8 @@ class CreateBasketsTable extends Migration
         Schema::create('baskets', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->unsignedInteger('user_id');
-            $table->unsignedInteger('game_id');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('game_id');
             $table->unsignedInteger('quantity');
 
             $table->foreign('user_id')->references('id')->on('users');
