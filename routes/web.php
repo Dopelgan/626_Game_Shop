@@ -20,3 +20,6 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/admin', 'AdminController@index')->name('admin');
+Route::post('/game_add', 'AdminController@game_add')->name('game_add');
+Route::post('/platform_add', 'AdminController@platform_add')->name('platform_add');
