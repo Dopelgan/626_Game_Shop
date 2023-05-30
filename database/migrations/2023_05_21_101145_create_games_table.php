@@ -23,6 +23,7 @@ class CreateGamesTable extends Migration
             $table->unsignedBigInteger('sold_quantity')->default('0');
             $table->unsignedBigInteger('count')->default('0');
             $table->unsignedInteger('year');
+            $table->longText('image')->nullable();
         });
     }
 

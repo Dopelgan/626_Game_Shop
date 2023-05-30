@@ -18,6 +18,8 @@ class CreatePlatformsTable extends Migration
             $table->timestamps();
             $table->string('name')->unique();
             $table->string('full_name')->unique();
+            $table->longText('icon')->nullable();
+            $table->longText('image')->nullable();
         });
     }
 

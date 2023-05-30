@@ -20,17 +20,17 @@ class AdminController extends Controller
         Log::debug('', $request->all());
 
         $messages = [
-            'game_name.unique' => 'Такая игра уже в каталоге.',
-            'game_name.max:255' => 'Наименование игры не должно превышать 255 символов.',
+            'name.unique' => 'Такая игра уже в каталоге.',
+            'name.max:255' => 'Наименование игры не должно превышать 255 символов.',
             'quantity.numeric' => 'В поле "Количество" вводимое значение должно быть числовым',
-            'quantity.max:10' => 'Количество не должно превышать "4294967295"',
+            'quantity.max:4294967295' => 'Количество не должно превышать "4294967295"',
             'image.mimes:png,jpg,jpeg' => 'Неподдерживаемый формат изображения',
             'image.max:2048' => 'Слишком высокое разрешение изображения'
         ];
 
         $request->validate([
-            'game_name' => 'max:255|required|unique:games,name',
-            'quantity' => 'numeric|max:10',
+            'name' => 'max:255|required|unique:games,name',
+            'quantity' => 'numeric|max:4294967295',
             'image' => 'required|image|mimes:png,jpg,jpeg|max:2048',
         ], $messages);
 
@@ -53,26 +53,38 @@ class AdminController extends Controller
             $game->save();
         });
 
+        return response()->json(['message' => 'Игра успешно добавлена в каталог']);
+
     }
 
     public function platform_add(Request $request)
     {
-        if ($request->hasFile('small_image') && $request->hasFile('big_image')) {
-            $small_image = $request->file('small_image');
-            $big_image = $request->file('big_image');
+        Log::debug('test', $request->all());
 
-            $small_imageName = time() . '.' . $small_image->extension();
-            $big_imageName = time() . '.' . $big_image->extension();
+        if ($request->hasFile('icon') && $request->hasFile('image')) {
 
-            $small_image->move(public_path('platforms_images/small'), $small_imageName);
-            $big_image->move(public_path('platforms_images/big'), $big_imageName);
+            $icon = $request->file('icon');
+            $image = $request->file('image');
+
+            $iconName = time() . '.' . $icon->extension();
+            $imageName = time() . '.' . $image->extension();
+
+            $icon->move(public_path('platforms_images/icon'), $iconName);
+            $image->move(public_path('platforms_images/image'), $imageName);
+
+
+            DB::transaction(function () use ($request, $iconName, $imageName) {
+                $platform = new Platform();
+                $platform->name = $request->name;
+                $platform->full_name = $request->full_name;
+                $platform->icon = public_path('platforms_images/icon') . '/' . $iconName;
+                $platform->image = public_path('platforms_images/image') . '/' . $imageName;
+                $platform->save();
+            });
+
+            return response()->json(['message' => 'Платформа успешно добавлена']);
         }
 
-        DB::transaction(function () use ($request) {
-            $game = new Platform();
-            $game->name = $request->name;
-            $game->full_name = $request->full_name;
-            $game->save();
-        });
+        return response()->json(['message' => 'Всё пошло по пизде'], 500);
     }
 }
