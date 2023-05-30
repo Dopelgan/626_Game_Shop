@@ -39,7 +39,7 @@ class AdminController extends Controller
 
             $imageName = time() . '.' . $image->extension();
 
-            $image->move(public_path('games_images'), $imageName);
+            $image->move(public_path('images/games_images'), $imageName);
         }
 
         DB::transaction(function () use ($request) {
@@ -69,16 +69,16 @@ class AdminController extends Controller
             $iconName = time() . '.' . $icon->extension();
             $imageName = time() . '.' . $image->extension();
 
-            $icon->move(public_path('platforms_images/icon'), $iconName);
-            $image->move(public_path('platforms_images/image'), $imageName);
+            $icon->move(public_path('images/platforms_images/icon'), $iconName);
+            $image->move(public_path('images/platforms_images/image'), $imageName);
 
 
             DB::transaction(function () use ($request, $iconName, $imageName) {
                 $platform = new Platform();
                 $platform->name = $request->name;
                 $platform->full_name = $request->full_name;
-                $platform->icon = public_path('platforms_images/icon') . '/' . $iconName;
-                $platform->image = public_path('platforms_images/image') . '/' . $imageName;
+                $platform->icon = public_path('images/platforms_images/icon') . '/' . $iconName;
+                $platform->image = public_path('images/platforms_images/image') . '/' . $imageName;
                 $platform->save();
             });
 
