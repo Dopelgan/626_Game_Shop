@@ -41,9 +41,7 @@ class AdminController extends Controller
             $imageName = time() . '.' . $image->extension();
 
             $image->move(public_path('images/games_images'), $imageName);
-        }
 
-        DB::transaction(function () use ($request) {
             $game = new Game();
             $game->name = $request->name;
             $game->platform_id = $request->platform_id;
@@ -51,11 +49,12 @@ class AdminController extends Controller
             $game->price = $request->price;
             $game->year = $request->year;
             $game->description = $request->description;
+            $game->image = (public_path('images/games_images').'/'.$imageName);
             $game->save();
-        });
 
         return response()->json(['message' => 'Игра успешно добавлена в каталог']);
 
+        }
     }
 
     public function platform_add(Request $request)

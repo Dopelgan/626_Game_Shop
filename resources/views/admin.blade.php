@@ -103,9 +103,9 @@
 
                     formData.append('image', fileInput.files[0]); // Добавляем изображение игры в FormData
                     formData.append('name', $('#game-name').val()); // Добавляем название игры в FormData
+                    formData.append('platform_id', $('#platform-id').val()); // Добавляем платформу игры в FormData
                     formData.append('quantity', $('#game-quantity').val()); // Добавляем количество игр в FormData
                     formData.append('price', $('#game-price').val()); // Добавляем цену игры в FormData
-                    formData.append('platform_id', $('#platform-id').val()); // Добавляем платформу игры в FormData
                     formData.append('year', $('#game-year').val()); // Добавляем год выхода игры в FormData
                     formData.append('description', $('#game-description').val()); // Добавляем описание игры в FormData
 
