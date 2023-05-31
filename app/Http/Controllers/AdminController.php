@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Game;
+use App\Genre;
 use App\Platform;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -85,6 +86,6 @@ class AdminController extends Controller
             return response()->json(['message' => 'Платформа успешно добавлена']);
         }
 
-        return response()->json(['message' => 'Всё пошло по пизде'], 500);
+        return response()->json(['message' => 'Всё пошло по пизде']);
     }
 }
